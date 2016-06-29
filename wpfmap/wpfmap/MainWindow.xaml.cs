@@ -23,6 +23,7 @@ namespace wpfmap
         public MainWindow()
         {
             InitializeComponent();
+            System.Console.WriteLine("Hello Wordl");
         }
     }
 }
