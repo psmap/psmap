@@ -2,9 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="550" Width="625">
     <Grid>
-        <m:Map Name="MyMap" Center="51.554,0.6877" ZoomLevel="15"
+        <m:Map Name="MyMap" Center="53.21,83.46" ZoomLevel="6"
                CredentialsProvider="YOUR_BING_MAPS_KEY"/>
     </Grid>
 </Window>
