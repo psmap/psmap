@@ -5,6 +5,6 @@
         Title="MainWindow" Height="550" Width="625">
     <Grid>
         <m:Map Name="MyMap" Center="53.21,83.46" ZoomLevel="6"
-               CredentialsProvider="YOUR_BING_MAPS_KEY"/>
+               CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB"/>
     </Grid>
 </Window>
