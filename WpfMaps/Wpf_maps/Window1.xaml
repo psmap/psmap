@@ -1,0 +1,24 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="Wpf_maps.Window1"
+    Title="Window1" mc:Ignorable="d"
+    xmlns:ctrls="clr-namespace:Wpf_maps">
+    <Window.Resources>
+        <ctrls:MapControl x:Key="mapControl"/>
+
+
+    </Window.Resources>
+
+    <!--<Viewbox Stretch="Uniform">
+        <ctrls:MapControl/>
+
+    </Viewbox>-->
+    
+    <Grid>
+        <Grid.Background>
+            <VisualBrush Stretch="Uniform" Visual="{StaticResource mapControl}"/>
+        </Grid.Background>
+    </Grid>
+
+</Window>
