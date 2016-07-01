@@ -1,10 +1,12 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using Microsoft.Maps.MapControl.WPF.Core;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Collections.Generic;
+using Microsoft.Maps.MapControl.WPF;
+using Microsoft.Maps.MapControl.WPF.Core;
+using Microsoft.Maps.MapControl.WPF.Design;
 
 namespace WpfApplication1
 {
@@ -77,8 +79,6 @@ namespace WpfApplication1
 
             return image;
         }
-
-
     }
 }
 

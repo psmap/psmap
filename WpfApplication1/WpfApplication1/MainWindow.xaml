@@ -4,7 +4,11 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="MainWindow" Height="550" Width="625">
     <Grid>
-        <m:Map Name="MyMap" Center="53.21,83.46" ZoomLevel="6"
-               CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB"/>
+        <m:Map Name="MyMap" Center="53.21,83.46" ZoomLevel="6" CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
+            <m:Pushpin Location="53.370448, 83.774106"/>
+            <m:MapPolygon Fill="Blue" Stroke="Green" StrokeThickness="5" 
+                          Locations="53.6424,83.3219 53.8424,83.1747 53.5814,83.1747" 
+                          Opacity="0.7"/>
+        </m:Map>
     </Grid>
 </Window>
