@@ -4,20 +4,21 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="MainWindow" Height="550" Width="625">
     <Grid>
-
+        <TextBlock Name="GeoStatus" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Geo Status .."  />
         <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="AerialWithLabels" Grid.RowSpan="2"
                MouseDoubleClick="MapWithPushpins_MouseDoubleClick"
                CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
-
-            <m:Pushpin Location="53.370448,83.774106"/>
-
+            
+            <m:MapPolyline Stroke="Red" StrokeThickness="5" 
+                 Locations="53.368797,83.772129 53.370605,83.774975" 
+                 Opacity="0.7"/>
             <m:Pushpin Location="53.347617,83.739027"/>
 
             <m:MapPolygon Fill="Blue" Stroke="Green" StrokeThickness="5" 
                           Locations="53.369797,83.773129 53.370605,83.774975 53.371850,83.773344" 
                           Opacity="0.7"/>
         </m:Map>
-
+        
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button Content="+" FontSize="20" Width="50" Click="Button1" Height="35"/>
             <Button Content="-" FontSize="20" Width="50" Click="Button2" Height="35"/>
