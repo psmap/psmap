@@ -32,34 +32,43 @@ namespace GIS
             DataContext = this;
         }
 
+        void addNewPolyline()
+        {
+            MapPolyline polyline = new MapPolyline();
+            polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkGray);
+            polyline.StrokeThickness = 5;
+            polyline.Opacity = 0.7;
+            polyline.Locations = new LocationCollection() {
+        new Location(53.355195,83.769511),
+        new Location(53.337574,83.788342)};
+
+            myMap.Children.Add(polyline);
+        }
+
         private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
             Point mousePosition = e.GetPosition(this);
             Location pinLocation = myMap.ViewportPointToLocation(mousePosition);
 
-            var A = new double?[6];
-            var B = new string[1];
-            int i = 0, k = 0;
+            List<Voltage_levels> levels_list;
+            List<Types> types_list;
+
             using (var db = new ObjectsEntities())
             {
                 var VoltageQuery = from b in db.Voltage_levels
-                            orderby b.Id
-                            select b;
+                                   orderby b.Id
+                                   select b;
+                levels_list = VoltageQuery.ToList();
 
-                foreach (var item in VoltageQuery)
-                {
-                    A[i] = item.Voltage; i++;
-                }
+                QQQ.ItemsSource = levels_list;
 
                 var TypeQuery = from b in db.Types
-                            orderby b.Id
-                            select b;
+                                orderby b.Id
+                                select b;
 
-                foreach (var item in TypeQuery)
-                {
-                    B[k] = item.Type; k++;
-                }
+                types_list = TypeQuery.ToList();
+                KKK.ItemsSource = types_list;
             }
 
             Pushpin pin = new Pushpin();
@@ -68,7 +77,7 @@ namespace GIS
             myMap.Children.Add(pin);
 
             System.Windows.Controls.Label label = new System.Windows.Controls.Label();
-            label.Content = "Voltage: " + A[0] + "kV\nType: " + B[0];
+            label.Content = "Voltage: " + levels_list[0].Voltage + "kV\nType: " + types_list[0].Type;
             label.Foreground = new SolidColorBrush(Colors.DarkBlue);
             label.Background = new SolidColorBrush(Colors.WhiteSmoke);
             label.FontSize = 10;
