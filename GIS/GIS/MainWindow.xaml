@@ -8,7 +8,7 @@
         <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="AerialWithLabels" Grid.RowSpan="2"
                MouseDoubleClick="MapWithPushpins_MouseDoubleClick"
                CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
-            
+
             <m:Pushpin Location="53.347617,83.739027"/>
 
             <m:MapPolygon Fill="Blue" Stroke="Green" StrokeThickness="5" 
@@ -22,7 +22,9 @@
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button Content="+" FontSize="20" Width="50" Click="Button1" Height="35"/>
-            <Button Content="-" FontSize="20" Width="50" Click="Button2" Height="35"/>
+            <Button FontSize="20" Width="50" Click="Button2" Height="35">
+                <Rectangle Fill="#FFF4F4F5" Height="100" Stroke="Black" Width="100"/>
+            </Button>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">

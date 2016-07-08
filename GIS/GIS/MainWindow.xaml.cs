@@ -24,12 +24,95 @@ namespace GIS
     public partial class MainWindow : Window
     {
         LocationConverter locConverter = new LocationConverter();
-        ObjectsEntities context = new ObjectsEntities();
+        ObjectEntities context = new ObjectEntities();
+        List<Voltage_levels> levels_list;
+        List<Types> types_list;
+
+
+   
+
+
+
+
+        void myMap_MouseLeftButtonDown(object sender, MouseEventArgs e)
+        {
+
+
+            var element = sender as FrameworkElement;
+
+            
+            System.Windows.Controls.Label label = new System.Windows.Controls.Label();
+            label.Content = "Voltage: " + element.GetType() + "\nType: " + element.Name + "\nKoor: ";
+            label.Foreground = new SolidColorBrush(Colors.DarkBlue);
+            label.Background = new SolidColorBrush(Colors.WhiteSmoke);
+            label.FontSize = 10;
+            MapLayer.SetPosition(label, new Location(54, 83));
+            myMap.Children.Add(label);
+            if (myMap.Name == element.Name) { }
+
+
+
+
+        }
 
         public MainWindow()
         {
+
             InitializeComponent();
             DataContext = this;
+
+
+
+          
+
+
+
+
+
+
+            using (var db = new ObjectEntities())
+            {
+                var VoltageQuery = from b in db.Voltage_levels
+                                   orderby b.Id
+                                   select b;
+                levels_list = VoltageQuery.ToList();
+
+                QQQ.ItemsSource = levels_list;
+
+                var TypeQuery = from b in db.Types
+                                orderby b.Id
+                                select b;
+
+                types_list = TypeQuery.ToList();
+                KKK.ItemsSource = types_list;
+
+
+                var ObjectsQuery = from b in db.Objects
+                              orderby b.Id
+                              select b;
+
+               
+
+
+        
+
+                foreach (var idname in ObjectsQuery)
+                {
+                    Pushpin pin = new Pushpin();
+                    pin.Location = new Location(Convert.ToDouble(idname.Latitude), Convert.ToDouble(idname.Longitude));
+                    pin.Uid = Convert.ToString(idname.Id);
+                    pin.Name = "name"+Convert.ToString(idname.Name);
+                    pin.MouseDown +=
+                new MouseButtonEventHandler(myMap_MouseLeftButtonDown);
+
+                    myMap.Children.Add(pin);
+                }
+
+
+
+
+            }
+
         }
 
         void addNewPolyline()
@@ -47,29 +130,15 @@ namespace GIS
 
         private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
+          //  MessageBox.Show("123"+ e.ChangedButton, "Ошибка при вводе имени",
+      //  MessageBoxButton.OK, MessageBoxImage.None);
+
             e.Handled = true;
             Point mousePosition = e.GetPosition(this);
             Location pinLocation = myMap.ViewportPointToLocation(mousePosition);
 
-            List<Voltage_levels> levels_list;
-            List<Types> types_list;
 
-            using (var db = new ObjectsEntities())
-            {
-                var VoltageQuery = from b in db.Voltage_levels
-                                   orderby b.Id
-                                   select b;
-                levels_list = VoltageQuery.ToList();
-
-                QQQ.ItemsSource = levels_list;
-
-                var TypeQuery = from b in db.Types
-                                orderby b.Id
-                                select b;
-
-                types_list = TypeQuery.ToList();
-                KKK.ItemsSource = types_list;
-            }
 
             Pushpin pin = new Pushpin();
             pin.Location = pinLocation;
@@ -77,12 +146,17 @@ namespace GIS
             myMap.Children.Add(pin);
 
             System.Windows.Controls.Label label = new System.Windows.Controls.Label();
-            label.Content = "Voltage: " + levels_list[0].Voltage + "kV\nType: " + types_list[0].Type;
+            label.Content = "Voltage: " + levels_list[0].Voltage + "kV\nType: " + types_list[0].Type + "kV\nKoor: " + pinLocation;
             label.Foreground = new SolidColorBrush(Colors.DarkBlue);
             label.Background = new SolidColorBrush(Colors.WhiteSmoke);
             label.FontSize = 10;
             MapLayer.SetPosition(label, pinLocation);
             myMap.Children.Add(label);
+
+
+         
+
+
         }
 
         private void Button1(object sender, RoutedEventArgs e)

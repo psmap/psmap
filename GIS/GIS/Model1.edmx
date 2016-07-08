@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище ObjectsModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище ObjectModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Objects">
           <Key>
             <PropertyRef Name="Id" />
@@ -42,7 +42,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Objects_Voltage">
+        <Association Name="FK_Objects_Voltage_levels">
           <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="0..1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
           <ReferentialConstraint>
@@ -54,7 +54,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище ObjectsModelContainer">
+        <EntityContainer Name="Хранилище ObjectModelContainer">
           <EntitySet Name="Objects" EntityType="Self.Objects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Voltage_levels" EntityType="Self.Voltage_levels" Schema="dbo" store:Type="Tables" />
@@ -62,7 +62,7 @@
             <End Role="Types" EntitySet="Types" />
             <End Role="Objects" EntitySet="Objects" />
           </AssociationSet>
-          <AssociationSet Name="FK_Objects_Voltage" Association="Self.FK_Objects_Voltage">
+          <AssociationSet Name="FK_Objects_Voltage_levels" Association="Self.FK_Objects_Voltage_levels">
             <End Role="Voltage_levels" EntitySet="Voltage_levels" />
             <End Role="Objects" EntitySet="Objects" />
           </AssociationSet>
@@ -71,7 +71,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ObjectsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ObjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Objects">
           <Key>
             <PropertyRef Name="Id" />
@@ -83,7 +83,7 @@
           <Property Name="Voltage" Type="Byte" />
           <Property Name="Type" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Types" Relationship="Self.FK_Objects_Types" FromRole="Objects" ToRole="Types" />
-          <NavigationProperty Name="Voltage_levels" Relationship="Self.FK_Objects_Voltage" FromRole="Objects" ToRole="Voltage_levels" />
+          <NavigationProperty Name="Voltage_levels" Relationship="Self.FK_Objects_Voltage_levels" FromRole="Objects" ToRole="Voltage_levels" />
         </EntityType>
         <EntityType Name="Types">
           <Key>
@@ -99,7 +99,7 @@
           </Key>
           <Property Name="Id" Type="Byte" Nullable="false" />
           <Property Name="Voltage" Type="Double" />
-          <NavigationProperty Name="Objects" Relationship="Self.FK_Objects_Voltage" FromRole="Voltage_levels" ToRole="Objects" />
+          <NavigationProperty Name="Objects" Relationship="Self.FK_Objects_Voltage_levels" FromRole="Voltage_levels" ToRole="Objects" />
         </EntityType>
         <Association Name="FK_Objects_Types">
           <End Role="Types" Type="Self.Types" Multiplicity="1" />
@@ -113,7 +113,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Objects_Voltage">
+        <Association Name="FK_Objects_Voltage_levels">
           <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="0..1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
           <ReferentialConstraint>
@@ -125,7 +125,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ObjectsEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ObjectEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Objects" EntityType="Self.Objects" />
           <EntitySet Name="Types" EntityType="Self.Types" />
           <EntitySet Name="Voltage_levels" EntityType="Self.Voltage_levels" />
@@ -133,7 +133,7 @@
             <End Role="Types" EntitySet="Types" />
             <End Role="Objects" EntitySet="Objects" />
           </AssociationSet>
-          <AssociationSet Name="FK_Objects_Voltage" Association="Self.FK_Objects_Voltage">
+          <AssociationSet Name="FK_Objects_Voltage_levels" Association="Self.FK_Objects_Voltage_levels">
             <End Role="Voltage_levels" EntitySet="Voltage_levels" />
             <End Role="Objects" EntitySet="Objects" />
           </AssociationSet>
@@ -143,9 +143,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище ObjectsModelContainer" CdmEntityContainer="ObjectsEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ObjectModelContainer" CdmEntityContainer="ObjectEntities">
           <EntitySetMapping Name="Objects">
-            <EntityTypeMapping TypeName="ObjectsModel.Objects">
+            <EntityTypeMapping TypeName="ObjectModel.Objects">
               <MappingFragment StoreEntitySet="Objects">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -157,7 +157,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Types">
-            <EntityTypeMapping TypeName="ObjectsModel.Types">
+            <EntityTypeMapping TypeName="ObjectModel.Types">
               <MappingFragment StoreEntitySet="Types">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -165,7 +165,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Voltage_levels">
-            <EntityTypeMapping TypeName="ObjectsModel.Voltage_levels">
+            <EntityTypeMapping TypeName="ObjectModel.Voltage_levels">
               <MappingFragment StoreEntitySet="Voltage_levels">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Voltage" ColumnName="Voltage" />
