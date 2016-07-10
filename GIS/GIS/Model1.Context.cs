@@ -13,10 +13,10 @@ namespace GIS
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ObjectsEntities : DbContext
+    public partial class ObjectEntities : DbContext
     {
-        public ObjectsEntities()
-            : base("name=ObjectsEntities")
+        public ObjectEntities()
+            : base("name=ObjectEntities")
         {
         }
     
