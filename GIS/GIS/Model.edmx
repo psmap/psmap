@@ -9,26 +9,26 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Latitude" Type="float" />
-          <Property Name="Longitude" Type="float" />
-          <Property Name="Voltage" Type="tinyint" />
-          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
+          <Property Name="Longitude" Type="float" Nullable="false" />
+          <Property Name="Voltage" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Types">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Voltage_levels">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="tinyint" Nullable="false" />
-          <Property Name="Voltage" Type="float" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Voltage" Type="float" Nullable="false" />
         </EntityType>
         <Association Name="FK_Objects_Types">
           <End Role="Types" Type="Self.Types" Multiplicity="1" />
@@ -43,7 +43,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Objects_Voltage">
-          <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="0..1" />
+          <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Voltage_levels">
@@ -76,12 +76,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Latitude" Type="Double" />
-          <Property Name="Longitude" Type="Double" />
-          <Property Name="Voltage" Type="Byte" />
-          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="Voltage" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Types" Relationship="Self.FK_Objects_Types" FromRole="Objects" ToRole="Types" />
           <NavigationProperty Name="Voltage_levels" Relationship="Self.FK_Objects_Voltage" FromRole="Objects" ToRole="Voltage_levels" />
         </EntityType>
@@ -89,7 +89,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Objects" Relationship="Self.FK_Objects_Types" FromRole="Types" ToRole="Objects" />
         </EntityType>
@@ -97,8 +97,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="Voltage" Type="Double" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Voltage" Type="Double" Nullable="false" />
           <NavigationProperty Name="Objects" Relationship="Self.FK_Objects_Voltage" FromRole="Voltage_levels" ToRole="Objects" />
         </EntityType>
         <Association Name="FK_Objects_Types">
@@ -114,7 +114,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Objects_Voltage">
-          <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="0..1" />
+          <End Role="Voltage_levels" Type="Self.Voltage_levels" Multiplicity="1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Voltage_levels">

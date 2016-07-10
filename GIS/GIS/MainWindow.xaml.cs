@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
+using System.Data.Entity;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,74 +24,66 @@ namespace GIS
 {
     public partial class MainWindow : Window
     {
-        LocationConverter locConverter = new LocationConverter();
-        ObjectsEntities context = new ObjectsEntities();
+        ObjectsEntities db = new ObjectsEntities();
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
+
+            var pushpins = from x in db.Objects
+                           join y in db.Types on x.Type equals y.Id
+                           join z in db.Voltage_levels on x.Voltage equals z.Id
+                           select new
+                           {
+                               Name = x.Name,
+                               Latitude = x.Latitude,
+                               Longitude = x.Longitude,
+                               Voltage = z.Voltage,
+                               Type = y.Type
+                           };
+
+            foreach (var x in pushpins)
+            {
+                Pushpin pin = new Pushpin();
+                string Latitude = Convert.ToString(x.Latitude).Replace(',', '.');
+                string Longitude = Convert.ToString(x.Longitude).Replace(',', '.');
+                string ObjectName = Convert.ToString(x.Name);
+                pin.Location = new Location(Convert.ToDouble(x.Latitude), Convert.ToDouble(x.Longitude));
+                pin.ToolTip = ObjectName + "\n" + Latitude + ", " + Longitude + "\nType: " + x.Type + "\nVoltage: " + x.Voltage;
+                pin.MouseDown += new MouseButtonEventHandler(PushpinMouseLeftButtonDown);
+                pin.Tag = pin.Location;
+                myMap.Children.Add(pin);
+            }
         }
 
-        void addNewPolyline()
+        private void PushpinMouseLeftButtonDown(object sender, MouseEventArgs e)
         {
-            MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.DarkGray);
-            polyline.StrokeThickness = 5;
-            polyline.Opacity = 0.7;
-            polyline.Locations = new LocationCollection() {
-        new Location(53.355195,83.769511),
-        new Location(53.337574,83.788342)};
-
-            myMap.Children.Add(polyline);
+            var element = sender as FrameworkElement;
+            string[] substrings = Convert.ToString(element.Tag).Split(',');
+            string latitude = Convert.ToString(substrings[0] + "," + substrings[1]);
+            string longitude = Convert.ToString(substrings[2] + "," + substrings[3]);
+            Location pinLocation = new Location(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
+            string qwe = Convert.ToString(element.ToolTip);
+            Form a = new Form(pinLocation, qwe);
+            a.Show();
         }
 
-        private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void myMapMouseDoubleClick(object sender, MouseEventArgs e)
         {
             e.Handled = true;
             Point mousePosition = e.GetPosition(this);
             Location pinLocation = myMap.ViewportPointToLocation(mousePosition);
-
-            List<Voltage_levels> levels_list;
-            List<Types> types_list;
-
-            using (var db = new ObjectsEntities())
-            {
-                var VoltageQuery = from b in db.Voltage_levels
-                                   orderby b.Id
-                                   select b;
-                levels_list = VoltageQuery.ToList();
-
-                QQQ.ItemsSource = levels_list;
-
-                var TypeQuery = from b in db.Types
-                                orderby b.Id
-                                select b;
-
-                types_list = TypeQuery.ToList();
-                KKK.ItemsSource = types_list;
-            }
-
-            Pushpin pin = new Pushpin();
-            pin.Location = pinLocation;
-
-            myMap.Children.Add(pin);
-
-            System.Windows.Controls.Label label = new System.Windows.Controls.Label();
-            label.Content = "Voltage: " + levels_list[0].Voltage + "kV\nType: " + types_list[0].Type;
-            label.Foreground = new SolidColorBrush(Colors.DarkBlue);
-            label.Background = new SolidColorBrush(Colors.WhiteSmoke);
-            label.FontSize = 10;
-            MapLayer.SetPosition(label, pinLocation);
-            myMap.Children.Add(label);
+            Form a = new Form(pinLocation, "123");
+            a.Show();
         }
 
-        private void Button1(object sender, RoutedEventArgs e)
+        private void ZoomLevelUp(object sender, RoutedEventArgs e)
         {
             myMap.ZoomLevel += 1;
         }
 
-        private void Button2(object sender, RoutedEventArgs e)
+        private void ZoomLevelDown(object sender, RoutedEventArgs e)
         {
             myMap.ZoomLevel -= 1;
         }

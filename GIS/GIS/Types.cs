@@ -20,7 +20,7 @@ namespace GIS
             this.Objects = new HashSet<Objects>();
         }
     
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public string Type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

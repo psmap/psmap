@@ -14,12 +14,12 @@ namespace GIS
     
     public partial class Objects
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<double> Latitude { get; set; }
-        public Nullable<double> Longitude { get; set; }
-        public Nullable<byte> Voltage { get; set; }
-        public byte Type { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public int Voltage { get; set; }
+        public int Type { get; set; }
     
         public virtual Types Types { get; set; }
         public virtual Voltage_levels Voltage_levels { get; set; }
