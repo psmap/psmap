@@ -76,8 +76,8 @@ namespace GIS
             VoltageLevelSelection.ItemsSource = levels_list;
 
             var TypeQuery = from b in db.Types
-                               orderby b.Id
-                               select b;
+                            orderby b.Id
+                            select b;
 
             ObservableCollection<Types> types_list = new ObservableCollection<Types>(TypeQuery.ToList());
             TypeSelection.ItemsSource = types_list;
@@ -110,14 +110,14 @@ namespace GIS
         {
             var element = sender as FrameworkElement;
             string name = Convert.ToString(element.Tag);
-          
+
             var query = db.Objects
                 .Where(b => b.Name == name)
                 .FirstOrDefault();
 
             query.Name = ObjectName.Text;
-            query.Latitude = Math.Round(Convert.ToDouble(ObjectLatitude.Text),4);
-            query.Longitude = Math.Round(Convert.ToDouble(ObjectLongitude.Text),4);
+            query.Latitude = Math.Round(Convert.ToDouble(ObjectLatitude.Text), 4);
+            query.Longitude = Math.Round(Convert.ToDouble(ObjectLongitude.Text), 4);
             query.Type = Convert.ToInt32(TypeSelection.SelectedValue);
             query.Voltage = Convert.ToInt32(VoltageLevelSelection.SelectedValue);
 
