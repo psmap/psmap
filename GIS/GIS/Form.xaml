@@ -5,19 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="Добавление/Изменение информации" Height="265" Width="425">
+        Title="Добавление/Изменение информации" MinHeight="280" MinWidth="450" 
+        Height="280" Width="450" MaxHeight="300" MaxWidth="600">
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="76,12,0,0" TextWrapping="Wrap" Text="Название:" VerticalAlignment="Top" Width="91" Padding="5,2" BorderThickness="0"/>
-        <TextBox x:Name="ObjectName" HorizontalAlignment="Left" Height="22" Margin="171,12,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Padding="5,2"/>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="76,42,0,0" TextWrapping="Wrap" Text="Широта:" VerticalAlignment="Top" Width="91" Padding="5,2" BorderThickness="0"/>
-        <TextBox x:Name="ObjectLatitude" HorizontalAlignment="Left" Height="22" Margin="171,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Padding="5,2"/>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="76,72,0,0" TextWrapping="Wrap" Text="Долгота:" VerticalAlignment="Top" Width="91" Padding="5,2" BorderThickness="0"/>
-        <TextBox x:Name="ObjectLongitude" HorizontalAlignment="Left" Height="22" Margin="171,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Padding="5,2"/>
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="76,102,0,0" TextWrapping="Wrap" Text="Напряжение:" VerticalAlignment="Top" Width="91" Padding="5,2" BorderThickness="0"/>
-        <ComboBox x:Name="VoltageLevelSelection" HorizontalAlignment="Left" Height="22" Margin="171,102,0,0" VerticalAlignment="Top" Width="155" Padding="5,2" SelectedValuePath="Id" DisplayMemberPath="Voltage" />
-        <TextBox HorizontalAlignment="Left" Height="22" Margin="76,132,0,0" TextWrapping="Wrap" Text="Тип:" VerticalAlignment="Top" Width="91" Padding="5,2" BorderThickness="0"/>
-        <ComboBox x:Name="TypeSelection" HorizontalAlignment="Left" Height="22" Margin="171,132,0,0" VerticalAlignment="Top" Width="155" Padding="5,2" SelectedValuePath="Id" DisplayMemberPath="Type" />
-        <Button x:Name="Save_button" Content="Сохранить" HorizontalAlignment="Left" Margin="111,192,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
-        <Button Content="Отмена" Click="Cancel" HorizontalAlignment="Left" Margin="221,192,0,0" VerticalAlignment="Top" Width="75" Height="20"/>
+        <Grid Margin="0,0,310,0">
+            <TextBlock VerticalAlignment="Top" Margin="5,20,0,0"
+                       Padding="10,2" Height="25"
+                       TextWrapping="Wrap" Text="Название:" />
+            <TextBlock VerticalAlignment="Top" Margin="5,50,0,0"
+                       Padding="10,2" Height="25"
+                       TextWrapping="Wrap" Text="Широта:" />
+            <TextBlock VerticalAlignment="Top" Margin="5,80,0,0"
+                       Padding="10,2" Height="25"
+                       TextWrapping="Wrap" Text="Долгота:" />
+            <TextBlock VerticalAlignment="Top" Margin="5,110,0,0"
+                       Padding="10,2" Height="25"
+                       TextWrapping="Wrap" Text="Напряжение:"/>
+            <TextBlock VerticalAlignment="Top" Margin="5,140,0,0"
+                       Padding="10,2" Height="25"
+                       TextWrapping="Wrap" Text="Тип:" />
+        </Grid>
+        <Grid Margin="135,0,0,0">
+            <TextBox Text="{Binding Name, Mode=TwoWay}" MaxLength="30" Padding="5,2"
+                     TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,20,5,0" Height="25"/>
+            <TextBox Text="{Binding Latitude, Mode=TwoWay}" MaxLength="12" Padding="5,2"
+                     TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,50,5,0" Height="25" />
+            <TextBox Text="{Binding Longitude, Mode=TwoWay}" MaxLength="12" Padding="5,2"
+                     TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,80,5,0"  Height="25" />
+            <ComboBox x:Name="VoltageLevelSelection"  VerticalAlignment="Top" Margin="0,110,5,0" Height="25"
+                      SelectedValuePath="Id" DisplayMemberPath="Voltage" Padding="5,2"
+                      SelectedValue="{Binding Voltage, Mode=TwoWay}"/>
+            <ComboBox x:Name="TypeSelection" VerticalAlignment="Top" Margin="0,140,5,0" Height="25"
+                       Padding="5,2" SelectedValuePath="Id" DisplayMemberPath="Type"
+                      SelectedValue="{Binding Type, Mode=TwoWay}"/>
+        </Grid>
+        <Button x:Name="Save_button" Content="Сохранить" HorizontalAlignment="Center" Padding="10,3"
+                    Margin="0,0,125,30" VerticalAlignment="Bottom" Width="100" />
+        <Button Content="Отмена" HorizontalAlignment="Center" Click="Cancel" Padding="10,3"
+                    Margin="125,0,0,30" VerticalAlignment="Bottom" Width="100" />
     </Grid>
 </Window>

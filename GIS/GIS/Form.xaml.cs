@@ -20,67 +20,15 @@ namespace GIS
     {
         ObjectsEntities db = new ObjectsEntities();
 
-        public static void insertToDataBase(List<Objects> objects_list)
-        {
-
-            ObjectsEntities db = new ObjectsEntities();
-            foreach (Objects obj in objects_list)
-                db.Objects.Add(obj);
-
-            db.SaveChanges();
-        }
-
-        public Form(Location pinLocation, string qwe)
+        public Form(string DatabaseModification)
         {
             InitializeComponent();
+            Save_button.Click += DatabaseModification == "Update"
+                ? new RoutedEventHandler(Update)
+                : new RoutedEventHandler(Insert);
 
-            string[] substrings = Convert.ToString(pinLocation).Split(',');
-            string latitude = Convert.ToString(substrings[0] + "," + substrings[1]);
-            string longitude = Convert.ToString(substrings[2] + "," + substrings[3]);
-            ObjectLatitude.Text = latitude;
-            ObjectLongitude.Text = longitude;
-
-            if (qwe != "123")
-            {
-                Save_button.Click += new RoutedEventHandler(Update);
-
-                string[] qwea = Convert.ToString(qwe).Split('\n', ' ');
-
-                string type = qwea[4];
-                var TypeId = db.Types
-                .Where(b => b.Type == type)
-                .FirstOrDefault();
-
-                double voltage = Convert.ToDouble(qwea[6]);
-                var VoltageId = db.Voltage_levels
-                .Where(b => b.Voltage == voltage)
-                .FirstOrDefault();
-
-                ObjectName.Text = qwea[0];
-                TypeSelection.SelectedValue = Convert.ToInt32(TypeId.Id);
-                VoltageLevelSelection.SelectedValue = Convert.ToInt32(VoltageId.Id);
-
-                Save_button.Tag = ObjectName.Text;
-            }
-
-            else
-            {
-                Save_button.Click += new RoutedEventHandler(Insert);
-            }
-
-            var VoltageQuery = from b in db.Voltage_levels
-                               orderby b.Id
-                               select b;
-
-            ObservableCollection<Voltage_levels> levels_list = new ObservableCollection<Voltage_levels>(VoltageQuery.ToList());
-            VoltageLevelSelection.ItemsSource = levels_list;
-
-            var TypeQuery = from b in db.Types
-                            orderby b.Id
-                            select b;
-
-            ObservableCollection<Types> types_list = new ObservableCollection<Types>(TypeQuery.ToList());
-            TypeSelection.ItemsSource = types_list;
+            VoltageLevelSelection.ItemsSource = db.Voltage_levels.ToList();
+            TypeSelection.ItemsSource = db.Types.ToList();
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -90,40 +38,43 @@ namespace GIS
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            Objects objects_list = new Objects
+            FrameworkElement element = sender as FrameworkElement;
+            Objects objects_list = element.DataContext as Objects;
+            double Latitude;
+
+            MessageBox.Show(Convert.ToString(Double.TryParse(Convert.ToString(objects_list.Latitude), out Latitude)), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+            if (objects_list.Name != null)
             {
-                Name = ObjectName.Text,
-                Latitude = Math.Round(Convert.ToDouble(ObjectLatitude.Text), 4),
-                Longitude = Math.Round(Convert.ToDouble(ObjectLongitude.Text), 4),
-                Type = Convert.ToInt32(TypeSelection.SelectedValue),
-                Voltage = Convert.ToInt32(VoltageLevelSelection.SelectedValue)
-            };
-
-            db.Objects.Add(objects_list);
-            db.SaveChanges();
-
-            //MessageBox.Show("Данные успешно добавлены", "Добавление данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            Close();
+                db.Objects.Add(objects_list);
+                db.SaveChanges();
+                MessageBox.Show("Данные успешно добавлены", "Добавление данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                Close();
+            }
+            else MessageBox.Show("Некоторые значения не указаны", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void Update(object sender, RoutedEventArgs e)
         {
-            var element = sender as FrameworkElement;
-            string name = Convert.ToString(element.Tag);
+            FrameworkElement element = sender as FrameworkElement;
+            Objects objects_list = element.DataContext as Objects;
+            Objects note = db.Objects.Find(objects_list.Id);
 
-            var query = db.Objects
-                .Where(b => b.Name == name)
-                .FirstOrDefault();
+            if (objects_list.Name != "")
+            {
+                note.Name = objects_list.Name;
+                note.Latitude = objects_list.Latitude;
+                note.Longitude = objects_list.Longitude;
+                note.Type = objects_list.Type;
+                note.Voltage = objects_list.Voltage;
+                db.SaveChanges();
 
-            query.Name = ObjectName.Text;
-            query.Latitude = Math.Round(Convert.ToDouble(ObjectLatitude.Text), 4);
-            query.Longitude = Math.Round(Convert.ToDouble(ObjectLongitude.Text), 4);
-            query.Type = Convert.ToInt32(TypeSelection.SelectedValue);
-            query.Voltage = Convert.ToInt32(VoltageLevelSelection.SelectedValue);
+                MessageBox.Show(Convert.ToString("Latitude: " + objects_list.Latitude), "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                MessageBox.Show("Данные успешно обновлены", "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                Close();
+            }
 
-            db.SaveChanges();
-            MessageBox.Show("Данные успешно обновлены", "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            Close();
+            else MessageBox.Show("Некоторые значения не указаны", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
     }
 }

@@ -4,10 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d88cbef5b5b04b76bcdacc1cd848ca9d" Name="Diagram1">
+      <Diagram DiagramId="02333c2f9e4e4fccbe73f84a346c6f9a" Name="Diagram1">
+        <EntityTypeShape EntityType="ObjectsModel.Lines" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectsModel.Objects" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ObjectsModel.Types" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ObjectsModel.Voltage_levels" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectsModel.Types" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectsModel.Voltage_levels" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <AssociationConnector Association="ObjectsModel.FK_Lines_Objects" ManuallyRouted="false" />
+        <AssociationConnector Association="ObjectsModel.Lines_Objects" ManuallyRouted="false" />
         <AssociationConnector Association="ObjectsModel.FK_Objects_Types" ManuallyRouted="false" />
         <AssociationConnector Association="ObjectsModel.FK_Objects_Voltage" ManuallyRouted="false" />
       </Diagram>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6735F1FF-0892-4B58-A264-12EEEB9841C2}</ProjectGuid>
+    <ProjectGuid>{C1C02B8C-6113-4CE7-B8D3-D1C7FA0BE786}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GIS</RootNamespace>
@@ -69,8 +69,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddPolyline.xaml.cs">
+      <DependentUpon>AddPolyline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form.xaml.cs">
       <DependentUpon>Form.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Lines.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model.cs">
       <AutoGen>True</AutoGen>
@@ -86,6 +92,10 @@
     <Compile Include="Voltage_levels.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Page Include="AddPolyline.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Form.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

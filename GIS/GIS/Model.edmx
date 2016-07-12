@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Хранилище ObjectsModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Lines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstObject" Type="int" Nullable="false" />
+          <Property Name="SecondObject" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Objects">
           <Key>
             <PropertyRef Name="Id" />
@@ -30,6 +39,18 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Voltage" Type="float" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Lines_Objects">
+          <End Role="Objects" Type="Self.Objects" Multiplicity="1" />
+          <End Role="Lines" Type="Self.Lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lines">
+              <PropertyRef Name="SecondObject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Objects_Types">
           <End Role="Types" Type="Self.Types" Multiplicity="1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
@@ -54,10 +75,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Lines_Objects">
+          <End Role="Objects" Type="Self.Objects" Multiplicity="1" />
+          <End Role="Lines" Type="Self.Lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lines">
+              <PropertyRef Name="FirstObject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище ObjectsModelContainer">
+          <EntitySet Name="Lines" EntityType="Self.Lines" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Objects" EntityType="Self.Objects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Voltage_levels" EntityType="Self.Voltage_levels" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Lines_Objects" Association="Self.FK_Lines_Objects">
+            <End Role="Objects" EntitySet="Objects" />
+            <End Role="Lines" EntitySet="Lines" />
+          </AssociationSet>
           <AssociationSet Name="FK_Objects_Types" Association="Self.FK_Objects_Types">
             <End Role="Types" EntitySet="Types" />
             <End Role="Objects" EntitySet="Objects" />
@@ -66,12 +104,27 @@
             <End Role="Voltage_levels" EntitySet="Voltage_levels" />
             <End Role="Objects" EntitySet="Objects" />
           </AssociationSet>
+          <AssociationSet Name="Lines_Objects" Association="Self.Lines_Objects">
+            <End Role="Objects" EntitySet="Objects" />
+            <End Role="Lines" EntitySet="Lines" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ObjectsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Lines">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstObject" Type="Int32" Nullable="false" />
+          <Property Name="SecondObject" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Objects" Relationship="Self.FK_Lines_Objects" FromRole="Lines" ToRole="Objects" />
+          <NavigationProperty Name="Objects1" Relationship="Self.Lines_Objects" FromRole="Lines" ToRole="Objects" />
+        </EntityType>
         <EntityType Name="Objects">
           <Key>
             <PropertyRef Name="Id" />
@@ -82,6 +135,8 @@
           <Property Name="Longitude" Type="Double" Nullable="false" />
           <Property Name="Voltage" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Lines" Relationship="Self.FK_Lines_Objects" FromRole="Objects" ToRole="Lines" />
+          <NavigationProperty Name="Lines1" Relationship="Self.Lines_Objects" FromRole="Objects" ToRole="Lines" />
           <NavigationProperty Name="Types" Relationship="Self.FK_Objects_Types" FromRole="Objects" ToRole="Types" />
           <NavigationProperty Name="Voltage_levels" Relationship="Self.FK_Objects_Voltage" FromRole="Objects" ToRole="Voltage_levels" />
         </EntityType>
@@ -101,6 +156,30 @@
           <Property Name="Voltage" Type="Double" Nullable="false" />
           <NavigationProperty Name="Objects" Relationship="Self.FK_Objects_Voltage" FromRole="Voltage_levels" ToRole="Objects" />
         </EntityType>
+        <Association Name="FK_Lines_Objects">
+          <End Role="Objects" Type="Self.Objects" Multiplicity="1" />
+          <End Role="Lines" Type="Self.Lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lines">
+              <PropertyRef Name="SecondObject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Lines_Objects">
+          <End Role="Objects" Type="Self.Objects" Multiplicity="1" />
+          <End Role="Lines" Type="Self.Lines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lines">
+              <PropertyRef Name="FirstObject" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Objects_Types">
           <End Role="Types" Type="Self.Types" Multiplicity="1" />
           <End Role="Objects" Type="Self.Objects" Multiplicity="*" />
@@ -126,9 +205,18 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ObjectsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Lines" EntityType="Self.Lines" />
           <EntitySet Name="Objects" EntityType="Self.Objects" />
           <EntitySet Name="Types" EntityType="Self.Types" />
           <EntitySet Name="Voltage_levels" EntityType="Self.Voltage_levels" />
+          <AssociationSet Name="FK_Lines_Objects" Association="Self.FK_Lines_Objects">
+            <End Role="Objects" EntitySet="Objects" />
+            <End Role="Lines" EntitySet="Lines" />
+          </AssociationSet>
+          <AssociationSet Name="Lines_Objects" Association="Self.Lines_Objects">
+            <End Role="Objects" EntitySet="Objects" />
+            <End Role="Lines" EntitySet="Lines" />
+          </AssociationSet>
           <AssociationSet Name="FK_Objects_Types" Association="Self.FK_Objects_Types">
             <End Role="Types" EntitySet="Types" />
             <End Role="Objects" EntitySet="Objects" />
@@ -144,6 +232,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Хранилище ObjectsModelContainer" CdmEntityContainer="ObjectsEntities">
+          <EntitySetMapping Name="Lines">
+            <EntityTypeMapping TypeName="ObjectsModel.Lines">
+              <MappingFragment StoreEntitySet="Lines">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FirstObject" ColumnName="FirstObject" />
+                <ScalarProperty Name="SecondObject" ColumnName="SecondObject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Objects">
             <EntityTypeMapping TypeName="ObjectsModel.Objects">
               <MappingFragment StoreEntitySet="Objects">

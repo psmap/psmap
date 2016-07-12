@@ -7,14 +7,24 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="MainWindow" Height="550" Width="625">
     <Grid>
-        <TextBlock Name="GeoStatus" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Geo Status .."  />
         <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="Road" Grid.RowSpan="2"
-               MouseDoubleClick="myMapMouseDoubleClick"
+               MouseDoubleClick="myMapMouseDoubleClick" MouseWheel="myMapMouseWheel" MouseUp="myMapMouseUp"
                CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
+            <m:MapItemsControl ItemsSource="{Binding ObjectsList}">
+                <m:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <m:Pushpin Location="{Binding Loc}" ToolTip="{Binding ToolTip}"
+                                   MouseLeftButtonDown="PushpinMouseLeftButtonDown"
+                                   MouseRightButtonDown="PushpinMouseRightButtonDown"
+                                   MouseRightButtonUp="PushpinMouseRightButtonUp">
+                        </m:Pushpin>
+                    </DataTemplate>
+                </m:MapItemsControl.ItemTemplate>
+            </m:MapItemsControl>
         </m:Map>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Button Content="+" FontSize="15" Width="30" Height="30" Click="ZoomLevelUp" />
-            <Button Content="-" FontSize="15" Width="30" Height="30" Margin="0 5 0 0" Click="ZoomLevelDown" />
+            <Button Content="+" FontSize="15" Margin ="0 0 5 0" Width="30" Height="30" Click="ZoomLevelUp" />
+            <Button Content="-" FontSize="15" Margin ="0 5 5 0" Width="30" Height="30" Click="ZoomLevelDown" />
         </StackPanel>
     </Grid>
 </Window>
