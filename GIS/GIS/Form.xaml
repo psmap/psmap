@@ -33,7 +33,7 @@
             <TextBox Text="{Binding Longitude, Mode=TwoWay}" MaxLength="12" Padding="5,2"
                      TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,80,5,0"  Height="25" />
             <ComboBox x:Name="VoltageLevelSelection"  VerticalAlignment="Top" Margin="0,110,5,0" Height="25"
-                      SelectedValuePath="Id" DisplayMemberPath="Voltage" Padding="5,2"
+                      Padding="5,2" SelectedValuePath="Id" DisplayMemberPath="Voltage"
                       SelectedValue="{Binding Voltage, Mode=TwoWay}"/>
             <ComboBox x:Name="TypeSelection" VerticalAlignment="Top" Margin="0,140,5,0" Height="25"
                        Padding="5,2" SelectedValuePath="Id" DisplayMemberPath="Type"

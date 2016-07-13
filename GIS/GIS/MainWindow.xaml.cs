@@ -27,8 +27,8 @@ namespace GIS
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         ObjectsEntities db = new ObjectsEntities();
-
         private ObservableCollection<Objects> ObjectsListPrivate;
+        private ObservableCollection<Lines> LinesListPrivate;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string Name)
@@ -43,79 +43,44 @@ namespace GIS
             set { ObjectsListPrivate = value; RaisePropertyChanged("ObjectsList"); }
         }
 
-        public LocationCollection LineLocations = new LocationCollection();
+        public ObservableCollection<Lines> LinesList
+        {
+            get { return LinesListPrivate; }
+            set { LinesListPrivate = value; RaisePropertyChanged("LinesList"); }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-            Filter();
         }
+
+        public int VoltageBorder;
 
         public void Filter()
         {
-            Point mousePosition = Point.Parse(Convert.ToString(myMap.ActualWidth) + "," + Convert.ToString(myMap.ActualHeight));
-            Location pinLocation = myMap.ViewportPointToLocation(mousePosition);
-            Point nulloc = Point.Parse("0,0");
-            Location nulLocation = myMap.ViewportPointToLocation(nulloc);
+            Location FL = myMap.ViewportPointToLocation(Point.Parse(Convert.ToString(myMap.ActualWidth) + "," 
+                + Convert.ToString(myMap.ActualHeight)));
+            Location SL = myMap.ViewportPointToLocation(Point.Parse("0,0"));
 
-            if (nulLocation == myMap.Center)
-            {
-                IQueryable<Objects> pushpins = db.Objects
-                        .Where(q => q.Voltage >= 8 && q.Voltage <= 10);
-                ObjectsList = new ObservableCollection<Objects>(pushpins.ToList());
-            }
-            else
-            {
-                if (myMap.ZoomLevel < 6) { ObjectsList = new ObservableCollection<Objects>(); }
-                else
-                {
+            if (myMap.ZoomLevel >= 1 && myMap.ZoomLevel < 6) VoltageBorder = 10;
+            if (myMap.ZoomLevel >= 6 && myMap.ZoomLevel < 11) VoltageBorder = 9;
+            if (myMap.ZoomLevel >= 11 && myMap.ZoomLevel < 12) VoltageBorder = 8;
+            if (myMap.ZoomLevel >= 12) VoltageBorder = 1;
 
-                    if (myMap.ZoomLevel >= 6 && myMap.ZoomLevel <= 7)
-                    {
-                        IQueryable<Objects> pushpins = db.Objects
-                            .Where(q => q.Voltage >= 8 && q.Voltage <= 10 &&
-                            q.Latitude <= nulLocation.Latitude && q.Longitude >= nulLocation.Longitude &&
-                            q.Latitude >= pinLocation.Latitude && q.Longitude <= pinLocation.Longitude);
-                        ObjectsList = new ObservableCollection<Objects>(pushpins.ToList());
-                    }
+            IQueryable<Objects> pushpins = db.Objects
+                .Where(q => q.Voltage >= VoltageBorder &&
+                q.Latitude <= SL.Latitude && q.Longitude >= SL.Longitude &&
+                q.Latitude >= FL.Latitude && q.Longitude <= FL.Longitude);
+            ObjectsList = new ObservableCollection<Objects>(pushpins.ToList());
 
-                    if (myMap.ZoomLevel > 7 && myMap.ZoomLevel <= 8)
-                    {
-                        IQueryable<Objects> pushpins = db.Objects
-                            .Where(q => q.Voltage >= 4 && q.Voltage <= 10 &&
-                            q.Latitude <= nulLocation.Latitude && q.Longitude >= nulLocation.Longitude &&
-                            q.Latitude >= pinLocation.Latitude && q.Longitude <= pinLocation.Longitude);
-                        ObjectsList = new ObservableCollection<Objects>(pushpins.ToList());
-                    }
-
-                    if (myMap.ZoomLevel > 8)
-                    {
-                        IQueryable<Objects> pushpins = db.Objects
-                            .Where(q => q.Voltage >= 1 && q.Voltage <= 10 &&
-                            q.Latitude <= nulLocation.Latitude && q.Longitude >= nulLocation.Longitude &&
-                            q.Latitude >= pinLocation.Latitude && q.Longitude <= pinLocation.Longitude);
-                        ObjectsList = new ObservableCollection<Objects>(pushpins.ToList());
-                    }
-                }
-            }
-
-            ObservableCollection<Lines> LinesList = new ObservableCollection<Lines> (db.Lines.ToList());
-
-            foreach (var x in LinesList)
-            {
-                MapPolyline polyline = new MapPolyline();
-                polyline.Stroke = new SolidColorBrush(Colors.Gray);
-                polyline.StrokeThickness = 2;
-                polyline.Opacity = 0.8;
-
-                var FirstPointLocation = new Location(db.Objects.Find(x.FirstObject).Latitude, db.Objects.Find(x.FirstObject).Longitude);
-                var SecondPointLocation = new Location(db.Objects.Find(x.SecondObject).Latitude, db.Objects.Find(x.SecondObject).Longitude);
-
-                polyline.Locations = new LocationCollection() { FirstPointLocation, SecondPointLocation };
-                polyline.ToolTip = x.Name + "\nType: Polyline";
-                myMap.Children.Add(polyline);
-            }
+            IQueryable<Lines> lines = db.Lines
+                .Where(q=> q.Objects.Voltage >= VoltageBorder && q.Objects1.Voltage >= VoltageBorder &&
+                q.Objects.Latitude <= SL.Latitude && q.Objects.Longitude >= SL.Longitude &&
+                q.Objects.Latitude >= FL.Latitude && q.Objects.Longitude <= FL.Longitude &&
+                q.Objects1.Latitude <= SL.Latitude && q.Objects1.Longitude >= SL.Longitude &&
+                q.Objects1.Latitude >= FL.Latitude && q.Objects1.Longitude <= FL.Longitude);
+            LinesList = new ObservableCollection<Lines>(lines.ToList());
         }
 
         private void PushpinMouseLeftButtonDown(object sender, MouseEventArgs e)
@@ -129,6 +94,7 @@ namespace GIS
         }
 
         public Objects obj = new Objects();
+
         private void PushpinMouseRightButtonDown(object sender, MouseEventArgs e)
         {
             e.Handled = true;
@@ -146,7 +112,7 @@ namespace GIS
             {
                 FirstObject = obj.Id,
                 SecondObject = x.Id,
-                FirstObjectLocation = Convert.ToString(obj.Latitude).Replace(',','.') + ", " 
+                FirstObjectLocation = Convert.ToString(obj.Latitude).Replace(',', '.') + ", "
                 + Convert.ToString(obj.Longitude).Replace(',', '.'),
                 SecondObjectLocation = Convert.ToString(x.Latitude).Replace(',', '.') + ", "
                 + Convert.ToString(x.Longitude).Replace(',', '.'),
@@ -158,7 +124,7 @@ namespace GIS
                 add_polyline.DataContext = pl;
                 add_polyline.Show();
             }
-        } 
+        }
 
         private void myMapMouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -177,16 +143,41 @@ namespace GIS
             DataModification.Show();
         }
 
-        private void ZoomLevelUp(object sender, RoutedEventArgs e) { myMap.ZoomLevel += 1; Filter(); }
+        private void ZoomLevelUp(object sender, RoutedEventArgs e)
+        {
+            myMap.ZoomLevel += 1;
+            Filter();
+        }
 
-        private void ZoomLevelDown(object sender, RoutedEventArgs e) { myMap.ZoomLevel -= 1; Filter(); }
+        private void ZoomLevelDown(object sender, RoutedEventArgs e)
+        {
+            myMap.ZoomLevel -= 1;
+            Filter(); 
+        }
 
         private void myMapMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.Delta > 0) { myMap.ZoomLevel += 1; Filter(); }
-            else { myMap.ZoomLevel -= 1; Filter(); }
+            if (e.Delta > 0)
+            {
+                myMap.ZoomLevel += 1;
+                Filter();
+            }
+
+            else
+            {
+                myMap.ZoomLevel -= 1;
+                Filter();
+            }
         }
 
-        private void myMapMouseUp(object sender, RoutedEventArgs e) { Filter(); }
+        private void myMapMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Filter();
+        }
+
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
     }
 }

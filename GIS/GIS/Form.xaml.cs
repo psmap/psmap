@@ -40,9 +40,6 @@ namespace GIS
         {
             FrameworkElement element = sender as FrameworkElement;
             Objects objects_list = element.DataContext as Objects;
-            double Latitude;
-
-            MessageBox.Show(Convert.ToString(Double.TryParse(Convert.ToString(objects_list.Latitude), out Latitude)), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 
             if (objects_list.Name != null)
             {
@@ -51,7 +48,7 @@ namespace GIS
                 MessageBox.Show("Данные успешно добавлены", "Добавление данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 Close();
             }
-            else MessageBox.Show("Некоторые значения не указаны", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            else MessageBox.Show("Название объекта не указано", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void Update(object sender, RoutedEventArgs e)
@@ -59,6 +56,7 @@ namespace GIS
             FrameworkElement element = sender as FrameworkElement;
             Objects objects_list = element.DataContext as Objects;
             Objects note = db.Objects.Find(objects_list.Id);
+
 
             if (objects_list.Name != "")
             {
@@ -69,8 +67,7 @@ namespace GIS
                 note.Voltage = objects_list.Voltage;
                 db.SaveChanges();
 
-                MessageBox.Show(Convert.ToString("Latitude: " + objects_list.Latitude), "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                MessageBox.Show("Данные успешно обновлены", "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                MessageBox.Show("Название объекта не указано", "Изменение данных", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 Close();
             }
 

@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GIS"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-        Title="MainWindow" Height="550" Width="625">
+        Title="MainWindow" Height="550" Width="625" Loaded="WindowLoaded">
     <Grid>
         <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="Road" Grid.RowSpan="2"
-               MouseDoubleClick="myMapMouseDoubleClick" MouseWheel="myMapMouseWheel" MouseUp="myMapMouseUp"
+               MouseDoubleClick="myMapMouseDoubleClick"
+               MouseWheel="myMapMouseWheel" 
+               MouseLeftButtonUp="myMapMouseLeftButtonUp"
                CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
             <m:MapItemsControl ItemsSource="{Binding ObjectsList}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <m:Pushpin Location="{Binding Loc}" ToolTip="{Binding ToolTip}"
+                        <m:Pushpin Location="{Binding PuhpinPoints}" ToolTip="{Binding ToolTip}"
                                    MouseLeftButtonDown="PushpinMouseLeftButtonDown"
                                    MouseRightButtonDown="PushpinMouseRightButtonDown"
                                    MouseRightButtonUp="PushpinMouseRightButtonUp">
@@ -21,10 +23,20 @@
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>
+            <m:MapItemsControl ItemsSource="{Binding LinesList}">
+                <m:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <m:MapPolyline Stroke="Green" StrokeThickness="3" Opacity="0.8"
+                                       Locations="{Binding PolylinePoints}" ToolTip="{Binding ToolTip}">
+                        </m:MapPolyline>
+                    </DataTemplate>
+                </m:MapItemsControl.ItemTemplate>
+            </m:MapItemsControl>
         </m:Map>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button Content="+" FontSize="15" Margin ="0 0 5 0" Width="30" Height="30" Click="ZoomLevelUp" />
             <Button Content="-" FontSize="15" Margin ="0 5 5 0" Width="30" Height="30" Click="ZoomLevelDown" />
+            <Button Content="6" x:Name="Level" Margin ="0 5 5 0" Width="30" Height="30"></Button>
         </StackPanel>
     </Grid>
 </Window>

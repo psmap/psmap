@@ -11,8 +11,7 @@ namespace GIS
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.Maps.MapControl.WPF;
-
+    
     public partial class Objects
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,24 +25,9 @@ namespace GIS
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public Location Loc
-        {
-            get { return new Location(Latitude, Longitude); }
-            set { Loc = value; }
-        }
         public int Voltage { get; set; }
         public int Type { get; set; }
-        public string ToolTip
-        {
-            get
-            {
-                return Id + Name + "\nLatitude: " + Convert.ToString(Latitude).Replace(',', '.') + "\nLongitude: "
-                  + Convert.ToString(Longitude).Replace(',', '.')
-                  + "\nType: " + Types.Type + "\nVoltage: " + Voltage_levels.Voltage;
-            }
-            set { ToolTip = value; }
-        }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lines> Lines { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
