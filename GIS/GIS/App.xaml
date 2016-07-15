@@ -4,5 +4,32 @@
              xmlns:local="clr-namespace:GIS"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ControlTemplate x:Key="PushPinBlackTemplate">
+            <Grid>
+                <Rectangle Width="15" Height="15" Margin="0 26 0 0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\1.png" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="PushPinBlueTemplate">
+            <Grid>
+                <Rectangle Width="15" Height="15" Margin="0 26 0 0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\2.png" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="PushPinRedTemplate">
+            <Grid>
+                <Rectangle Width="15" Height="15" Margin="0 26 0 0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\3.png" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
     </Application.Resources>
 </Application>

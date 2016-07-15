@@ -33,8 +33,7 @@ namespace GIS
 
         private void RaisePropertyChanged(string Name)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(Name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Name));
         }
 
         public ObservableCollection<Objects> ObjectsList
@@ -55,18 +54,18 @@ namespace GIS
             DataContext = this;
         }
 
-        public int VoltageBorder;
-
         public void Filter()
         {
             Location FL = myMap.ViewportPointToLocation(Point.Parse(Convert.ToString(myMap.ActualWidth) + "," 
                 + Convert.ToString(myMap.ActualHeight)));
             Location SL = myMap.ViewportPointToLocation(Point.Parse("0,0"));
 
+            int VoltageBorder;
+
             if (myMap.ZoomLevel >= 1 && myMap.ZoomLevel < 6) VoltageBorder = 10;
-            if (myMap.ZoomLevel >= 6 && myMap.ZoomLevel < 11) VoltageBorder = 9;
-            if (myMap.ZoomLevel >= 11 && myMap.ZoomLevel < 12) VoltageBorder = 8;
-            if (myMap.ZoomLevel >= 12) VoltageBorder = 1;
+            else if (myMap.ZoomLevel >= 6 && myMap.ZoomLevel < 11) VoltageBorder = 9;
+            else if (myMap.ZoomLevel >= 11 && myMap.ZoomLevel < 12) VoltageBorder = 8;
+            else VoltageBorder = 1;
 
             IQueryable<Objects> pushpins = db.Objects
                 .Where(q => q.Voltage >= VoltageBorder &&
@@ -152,30 +151,22 @@ namespace GIS
         private void ZoomLevelDown(object sender, RoutedEventArgs e)
         {
             myMap.ZoomLevel -= 1;
-            Filter(); 
+            Filter();
         }
 
         private void myMapMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.Delta > 0)
-            {
-                myMap.ZoomLevel += 1;
-                Filter();
-            }
-
-            else
-            {
-                myMap.ZoomLevel -= 1;
-                Filter();
-            }
-        }
-
-        private void myMapMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
+            if (e.Delta > 0) myMap.ZoomLevel += 1;
+            else myMap.ZoomLevel -= 1;
             Filter();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void myMapMouseDown(object sender, MouseButtonEventArgs e)
         {
             Filter();
         }

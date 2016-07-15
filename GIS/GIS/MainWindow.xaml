@@ -7,15 +7,26 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="MainWindow" Height="550" Width="625" Loaded="WindowLoaded">
     <Grid>
-        <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="Road" Grid.RowSpan="2"
+        <m:Map Name="myMap" Center="53.21,83.46" ZoomLevel="6" Mode="Road"
                MouseDoubleClick="myMapMouseDoubleClick"
-               MouseWheel="myMapMouseWheel" 
-               MouseLeftButtonUp="myMapMouseLeftButtonUp"
+               MouseWheel="myMapMouseWheel"
+               Mouse.MouseDown="myMapMouseDown"
                CredentialsProvider="HeREAkEdo6IiJyIstYYM~cDtlQMsHGPvDBulEKGUlTw~AmjnIMDarGkE2m8kJmYLyfNRZmBZwlTObWP9vWAOB5B41EGS623BHzZmhZY6VZgB">
+            <m:MapItemsControl ItemsSource="{Binding LinesList}">
+                <m:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <m:MapPolyline Stroke="Black" StrokeThickness="1.5" Opacity="0.8"
+                                       Locations="{Binding PolylinePoints}" 
+                                       ToolTip="{Binding PolylineToolTip}">
+                        </m:MapPolyline>
+                    </DataTemplate>
+                </m:MapItemsControl.ItemTemplate>
+            </m:MapItemsControl>
             <m:MapItemsControl ItemsSource="{Binding ObjectsList}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <m:Pushpin Location="{Binding PuhpinPoints}" ToolTip="{Binding ToolTip}"
+                        <m:Pushpin Location="{Binding PushpinLocation}" ToolTip="{Binding PushpinToolTip}"
+                                   Template="{Binding PushpinTemplate}" Margin="0 0 0 -7.5"
                                    MouseLeftButtonDown="PushpinMouseLeftButtonDown"
                                    MouseRightButtonDown="PushpinMouseRightButtonDown"
                                    MouseRightButtonUp="PushpinMouseRightButtonUp">
@@ -23,20 +34,51 @@
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>
-            <m:MapItemsControl ItemsSource="{Binding LinesList}">
-                <m:MapItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <m:MapPolyline Stroke="Green" StrokeThickness="3" Opacity="0.8"
-                                       Locations="{Binding PolylinePoints}" ToolTip="{Binding ToolTip}">
-                        </m:MapPolyline>
-                    </DataTemplate>
-                </m:MapItemsControl.ItemTemplate>
-            </m:MapItemsControl>
         </m:Map>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-            <Button Content="+" FontSize="15" Margin ="0 0 5 0" Width="30" Height="30" Click="ZoomLevelUp" />
-            <Button Content="-" FontSize="15" Margin ="0 5 5 0" Width="30" Height="30" Click="ZoomLevelDown" />
-            <Button Content="6" x:Name="Level" Margin ="0 5 5 0" Width="30" Height="30"></Button>
+            <Button Content="+" FontSize="15" Margin ="0 0 5 0" Width="30" Height="30"
+                    Click="ZoomLevelUp" />
+            <Button Content="-" FontSize="15" Margin ="0 5 5 0" Width="30" Height="30"
+                    Click="ZoomLevelDown" />
         </StackPanel>
+        <Grid Background="Gainsboro" HorizontalAlignment="Left" 
+              VerticalAlignment="Bottom" 
+              Width="130" Height="100" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Border Grid.ColumnSpan="2" Grid.Row="0" BorderBrush="Gray"
+                    BorderThickness="1 1 1 0"/>
+            <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray"
+                    BorderThickness="1 1 0 0"/>
+            <Border Grid.Column="1" Grid.Row="1" BorderBrush="Gray"
+                    BorderThickness="1 1 1 0"/>
+            <Border Grid.Column="0" Grid.Row="2" BorderBrush="Gray"
+                    BorderThickness="1 1 0 0"/>
+            <Border Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
+                    BorderThickness="1 1 1 0"/>
+            <Border Grid.Column="0" Grid.Row="3" BorderBrush="Gray"
+                    BorderThickness="1 1 0 1"/>
+            <Border Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
+                    BorderThickness="1 1 1 1"/>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Voltage levels" 
+                       TextAlignment="Center" Padding="0 3"/>
+            <Image Grid.Column="0" Grid.Row="1" Width="20" Height="20" 
+                   Source="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\1.png"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="0.4, 3, 6, 10 kV" Padding="5 3"/>
+            <Image Grid.Column="0" Grid.Row="2" Width="20" Height="20" 
+                   Source="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\2.png"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="20, 27, 35, 110 kV" Padding="5 3"/>
+            <Image Grid.Column="0" Grid.Row="3" Width="20" Height="20" 
+                   Source="C:\Users\Дмитрий\Desktop\Project\psmap\GIS\packages\Microsoft.Maps.MapControl.WPF\Icons\3.png"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="220, 500 kV" Padding="5 3"/>
+        </Grid>
     </Grid>
 </Window>
